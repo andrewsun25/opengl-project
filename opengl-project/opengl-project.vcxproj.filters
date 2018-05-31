@@ -60,6 +60,9 @@
     <ClInclude Include="src\SpriteRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\CONSTANTS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -98,5 +101,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\sprite.shader" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\textures\ferret.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

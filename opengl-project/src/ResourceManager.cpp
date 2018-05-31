@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "ResourceManager.h"
-
+#include "util/Log.h"
 
 std::map<std::string, Texture> ResourceManager::Textures;
 std::map<std::string, Shader> ResourceManager::Shaders;

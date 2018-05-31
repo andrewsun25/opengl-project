@@ -11,10 +11,10 @@ public:
 	// default dstr calls dstr of Shader and VertexArray
 	void DrawSprite(Texture &texture, glm::vec2 position,
 		glm::vec2 size = glm::vec2(10, 10), GLfloat rotate = 0.0f,
-		glm::vec4 color = glm::vec4(1.0f));
+		glm::vec4 color = glm::vec4(1.0f));	
 private:
-	Shader m_shader;
-	VertexArray m_quadVAO;
+	Shader m_shader; // m_shader initialzed in constructor.
+	VertexArray m_quadVAO = VertexArray();
 
 	void initRenderData();
 

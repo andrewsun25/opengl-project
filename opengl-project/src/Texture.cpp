@@ -1,12 +1,11 @@
 #include "stdafx.h"
 #include "Texture.h"
-#include "Renderer.h"
 #include "stb_image/stb_image.h"
 #include "util/Log.h"
 
 Texture::Texture(const std::string & filepath)
-	: m_rendererID(0), m_width(0), m_height(0), m_bpp(0), m_isBound(true)
 {
+	
 	stbi_set_flip_vertically_on_load(1);
 	// 4 means RGBA
 	GLubyte* localBuffer = stbi_load(filepath.c_str(), &m_width, &m_height, &m_bpp, 4);
@@ -27,16 +26,13 @@ Texture::Texture(const std::string & filepath)
 	}
 }
 
-Texture::~Texture()
-{
-	GLCall(glDeleteTextures(1, &m_rendererID));
-}
-
-void Texture::Bind(GLuint slot)
+void Texture::Bind()
 {
 	m_isBound = true;
-	GLCall(glActiveTexture(GL_TEXTURE0 + slot));
-	GLCall(glBindTexture(GL_TEXTURE_2D, m_rendererID));
+	GLCall(glActiveTexture(GL_TEXTURE0));
+	if (m_rendererID) {
+		GLCall(glBindTexture(GL_TEXTURE_2D, m_rendererID));
+	}
 }
 
 void Texture::UnBind()

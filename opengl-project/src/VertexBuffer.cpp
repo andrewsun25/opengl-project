@@ -3,7 +3,6 @@
 #include "util/Log.h"
 // VertexBuffer is raw data. VertexArray ties this raw data with layout.
 VertexBuffer::VertexBuffer(const void * data, GLuint size)
-	:m_isBound(true)
 {
 	// Gen 1 VBO and stores its id in m_rendererID
 	GLCall(glGenBuffers(1, &m_rendererID));
@@ -12,11 +11,6 @@ VertexBuffer::VertexBuffer(const void * data, GLuint size)
 	// Sends data from CPU to a Vertex Buffer of type STATIC_DRAW.
 	GLCall(glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW));
 	Bind();
-}
-
-VertexBuffer::~VertexBuffer()
-{
-	GLCall(glDeleteBuffers(1, &m_rendererID));
 }
 
 void VertexBuffer::Bind()

@@ -2,16 +2,12 @@
 #include "VertexArray.h"
 #include "VertexBufferLayout.h"
 #include "util/Log.h"
+#include <iostream>
+
 VertexArray::VertexArray()
-	:m_rendererID(0), m_isBound(true)
 {
 	GLCall(glGenVertexArrays(1, &m_rendererID));
 	Bind();
-}
-
-VertexArray::~VertexArray()
-{
-	GLCall(glDeleteVertexArrays(1, &m_rendererID));
 }
 
 // Adds without Binding anything

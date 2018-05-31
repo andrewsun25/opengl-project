@@ -10,7 +10,7 @@
 #include "util/Log.h"
 
 SpriteRenderer::SpriteRenderer(const Shader& shader)
-	: m_shader(shader), m_quadVAO()
+	: m_shader(shader)
 {
 	initRenderData();
 }
@@ -29,9 +29,9 @@ void SpriteRenderer::DrawSprite(Texture & texture, glm::vec2 position,
 
 	m_shader.SetUniformMat4f("u_model", model);
 	m_shader.SetUniform4f("u_spriteRGBA", color.r, color.g, color.b, color.a);
-
 	texture.Bind();
-	GLCall(glDrawElements(GL_TRIANGLES, 4, GL_UNSIGNED_INT, nullptr));
+	m_quadVAO.Bind();
+	GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
 }
 
 void SpriteRenderer::initRenderData()
@@ -51,8 +51,8 @@ void SpriteRenderer::initRenderData()
 	VertexBufferLayout vbLayout;
 	vbLayout.push<float>(3);
 	vbLayout.push<float>(2);
-	m_quadVAO.addVertexBuffer(vbo, vbLayout);
+	m_quadVAO.AddVertexBuffer(vbo, vbLayout);
 	IndexBuffer ibo(indices, NUM_ARRAY_ELEMENTS(indices));
-	m_quadVAO.addIndexBuffer(ibo);
+	m_quadVAO.AddIndexBuffer(ibo);
 
 }

@@ -1,11 +1,7 @@
 #pragma once
 #include "GL/glew.h"
 #include "ResourceManager.h"
-#include "SpriteRenderer.h"
 #include "glm/glm.hpp"
-
-
-SpriteRenderer* Renderer;
 
 enum class GameState {
 	GAME_ACTIVE,

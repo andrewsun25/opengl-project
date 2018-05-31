@@ -2,18 +2,14 @@
 #include <string>
 #include <unordered_map>
 #include <glm/glm.hpp>
-
+#include "util/Log.h"
 
 
 class Shader
 {
-private:
-	unsigned int m_rendererID;
-	std::unordered_map<std::string, int> m_uniformLocationCache;
-	bool m_isBound;
 public:
+	Shader() = default;
 	Shader(const std::string& filepath);
-	virtual ~Shader();
 	void Bind();
 	void UnBind();
 	bool IsBound() const { return m_isBound; };
@@ -24,6 +20,9 @@ public:
 	void SetUniform1i(const std::string & name, int v);
 	void SetUniformMat4f(const std::string & name, const glm::mat4& matrix);
 private:
+	unsigned int m_rendererID = 0;
+	std::unordered_map<std::string, int> m_uniformLocationCache = std::unordered_map<std::string, int>();
+	bool m_isBound = true;
 	struct ShaderProgramSource
 	{
 		std::string VertexSource;

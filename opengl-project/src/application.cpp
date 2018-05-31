@@ -9,7 +9,7 @@
 #include "IndexBuffer.h"
 #include "VertexArray.h"
 #include "VertexBufferLayout.h"
-#include "Renderer.h"
+#include "App.h"
 #include "Shader.h"
 #include "Texture.h"
 #include "primitives/Vertex.h"
@@ -26,13 +26,14 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 const GLuint SCREEN_WIDTH = 800;
 // The height of the screen
 const GLuint SCREEN_HEIGHT = 600;
+const glm::vec4 backgroundColor(0.0, 0.0, 0.0, 0.0);
 
-Game Breakout(SCREEN_WIDTH, SCREEN_HEIGHT);
+App Breakout(SCREEN_WIDTH, SCREEN_HEIGHT, backgroundColor);
 
 int main(int argc, char *argv[])
 {
 	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
@@ -60,12 +61,12 @@ int main(int argc, char *argv[])
 	GLfloat lastFrame = 0.0f;
 
 	// Start Game within Menu State
-	Breakout.State = GAME_ACTIVE;
+	Breakout.State = GameState::GAME_ACTIVE;
 
 	while (!glfwWindowShouldClose(window))
 	{
 		// Calculate delta time
-		GLfloat currentFrame = glfwGetTime();
+		GLfloat currentFrame = static_cast<GLfloat>(glfwGetTime());
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 		glfwPollEvents();

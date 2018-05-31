@@ -4,20 +4,13 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include "Renderer.h"
 #include "util/Log.h"
 
 Shader::Shader(const std::string & filepath)
-	:m_rendererID(0), m_isBound(true), m_uniformLocationCache()
 {
 	ShaderProgramSource source = ParseShader(filepath);
 	m_rendererID = CreateShader(source.VertexSource, source.FragmentSource);
 	Bind();
-}
-
-Shader::~Shader()
-{
-	GLCall(glDeleteProgram(m_rendererID));
 }
 
 void Shader::Bind()

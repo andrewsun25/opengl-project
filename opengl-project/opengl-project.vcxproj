@@ -153,6 +153,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\CONSTANTS.h" />
     <ClInclude Include="src\SpriteRenderer.h" />
     <ClInclude Include="src\App.h" />
     <ClInclude Include="src\ResourceManager.h" />
@@ -189,6 +190,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\sprite.shader" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\textures\ferret.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

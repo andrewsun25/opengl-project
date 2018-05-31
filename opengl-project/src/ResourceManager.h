@@ -18,9 +18,6 @@ class ResourceManager
 {
 public:
 	ResourceManager() = delete;
-	// Resource storage
-	static std::map<std::string, Shader>    Shaders;
-	static std::map<std::string, Texture> Textures;
 	// Loads (and generates) a shader program from file loading vertex, fragment (and geometry) shader's source code. If gShaderFile is not nullptr, it also loads a geometry shader
 	static Shader   LoadShader(const std::string& file, const std::string& name);
 	// Retrieves a stored sader
@@ -32,5 +29,8 @@ public:
 	// Properly de-allocates all loaded resources
 	static void      Clear();
 private:
+	// Resource storage
+	static std::map<std::string, Shader>    Shaders;
+	static std::map<std::string, Texture> Textures;
 };
 

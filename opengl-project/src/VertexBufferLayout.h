@@ -24,11 +24,7 @@ struct VertexBufferAttribute
 class VertexBufferLayout
 {
 public:
-	VertexBufferLayout()
-		:m_stride(0), m_elements(){}
-
-	~VertexBufferLayout() {};
-
+	
 	template<typename T>
 	void push(int count)
 	{
@@ -60,7 +56,7 @@ public:
 	inline const std::vector<VertexBufferAttribute>& Elements() const { return m_elements; };
 	inline GLuint Stride() const { return m_stride; };
 private:
-	std::vector<VertexBufferAttribute> m_elements;
-	GLuint m_stride;
+	std::vector<VertexBufferAttribute> m_elements = std::vector<VertexBufferAttribute>();
+	GLuint m_stride = 0;
 };
 
