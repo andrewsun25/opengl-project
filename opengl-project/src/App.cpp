@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "App.h"
-#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 
 App::App(GLuint width, GLuint height, glm::vec4 backgroundColor)
 	:State(GameState::GAME_ACTIVE), Keys(), m_width(width), m_height(height),
@@ -10,15 +10,15 @@ App::App(GLuint width, GLuint height, glm::vec4 backgroundColor)
 
 App::~App()
 {
-	delete Global::Renderer;
+	delete Renderer;
 }
 
 void App::Init()
 {
-	ResourceManager& resourceManager = ResourceManager::getInstance();
-	ShaderProgramSource shaderSource = resourceManager.ParseShaderSource("res/shaders/Basic.shader");
-	Shader shader(shaderSource.vertexSource, shaderSource.fragmentSource);
-	Global::Renderer = new SpriteRenderer(shader);
+	ResourceManager::LoadShader("res/shaders/sprite.shader", "sprite");
+	Shader spriteShader = ResourceManager::Shaders["sprite"];
+	spriteShader
+	glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(m_width), 0.0f, static_cast<GLfloat>(m_height), -1.0f, 1.0f);
 }
 
 void App::ProcessInput(GLfloat dt)
@@ -32,5 +32,5 @@ void App::Update(GLfloat dt)
 void App::Render()
 {
 
-	Global::Renderer->DrawSprite()
+	Renderer->DrawSprite();
 }

@@ -2,15 +2,17 @@
 #include "GL/glew.h"
 #include "ResourceManager.h"
 #include "SpriteRenderer.h"
+#include "glm/glm.hpp"
 
-namespace Global {
-	SpriteRenderer* Renderer;
-}
+
+SpriteRenderer* Renderer;
+
 enum class GameState {
 	GAME_ACTIVE,
 	GAME_MENU,
 	GAME_WIN
 };
+
 class App
 {
 public:

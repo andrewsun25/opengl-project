@@ -5,10 +5,10 @@
 struct VertexBufferAttribute
 {
 	int count; // number of components that a single attribute has.
-	unsigned int type; // all GL_ENUMS are unsigned ints
-	unsigned char normalized; // GL_BOOLEAN
+	GLuint type; // all GL_ENUMS are GLuints
+	GLubyte normalized; // GL_BOOLEAN
 	int size; // total raw number of bytes that an entire attribute takes up.
-	VertexBufferAttribute(int count, unsigned int type, unsigned char normalized)
+	VertexBufferAttribute(int count, GLuint type, GLubyte normalized)
 		:count(count), type(type), normalized(normalized)
 	{
 		switch (type)
@@ -23,14 +23,11 @@ struct VertexBufferAttribute
 
 class VertexBufferLayout
 {
-private:
-	std::vector<VertexBufferAttribute> m_elements;
-	unsigned int m_stride;
 public:
 	VertexBufferLayout()
-		:m_stride(0) {}
+		:m_stride(0), m_elements(){}
 
-	virtual ~VertexBufferLayout() {};
+	~VertexBufferLayout() {};
 
 	template<typename T>
 	void push(int count)
@@ -47,20 +44,23 @@ public:
 	};
 
 	template<>
-	void push<unsigned int>(int count)
+	void push<GLuint>(int count)
 	{
 		m_elements.emplace_back(count, GL_UNSIGNED_INT, GL_FALSE);
 		m_stride += count * sizeof(GLuint);
 	};
 
 	template<>
-	void push<unsigned char>(int count)
+	void push<GLubyte>(int count)
 	{
 		m_elements.emplace_back(count, GL_UNSIGNED_BYTE, GL_TRUE);
 		m_stride += count * sizeof(GLubyte);
 	};
 
-	inline const std::vector<VertexBufferAttribute>& getAttrs() const { return m_elements; };
-	inline unsigned int getStride() const { return m_stride; };
+	inline const std::vector<VertexBufferAttribute>& Elements() const { return m_elements; };
+	inline GLuint Stride() const { return m_stride; };
+private:
+	std::vector<VertexBufferAttribute> m_elements;
+	GLuint m_stride;
 };
 

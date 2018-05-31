@@ -15,7 +15,7 @@ SpriteRenderer::SpriteRenderer(const Shader& shader)
 	initRenderData();
 }
 
-void SpriteRenderer::DrawSprite(Texture2D & texture, glm::vec2 position, 
+void SpriteRenderer::DrawSprite(Texture & texture, glm::vec2 position, 
 	glm::vec2 size, GLfloat rotate, glm::vec4 color)
 {
 	m_shader.Bind();
@@ -23,11 +23,12 @@ void SpriteRenderer::DrawSprite(Texture2D & texture, glm::vec2 position,
 	model = glm::translate(model, glm::vec3(position, 0.0f));
 	model = glm::translate(model, glm::vec3(0.5f * size.x, 0.5f * size.y, 0.0f));
 	model = glm::rotate(model, rotate, glm::vec3(0.0f, 0.0f, 1.0f));
+	// translate quad so its center is (0,0), not its bot left corner.
 	model = glm::translate(model, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f));
 	model = glm::scale(model, glm::vec3(size, 1.0f));
 
-	m_shader.setUniformMat4f("u_model", model);
-	m_shader.setUniform4f("u_spriteRGBA", color.r, color.g, color.b, color.a);
+	m_shader.SetUniformMat4f("u_model", model);
+	m_shader.SetUniform4f("u_spriteRGBA", color.r, color.g, color.b, color.a);
 
 	texture.Bind();
 	GLCall(glDrawElements(GL_TRIANGLES, 4, GL_UNSIGNED_INT, nullptr));

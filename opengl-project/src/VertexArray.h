@@ -5,16 +5,16 @@
 
 class VertexArray
 {
-private:
-	unsigned int m_rendererID;
-	
 public:
-	bool m_isBound;
 	VertexArray();
 	virtual ~VertexArray();
-	void addVertexBuffer(VertexBuffer& vb, const VertexBufferLayout& layout);
-	void addIndexBuffer(IndexBuffer& ib);
-	void bind();
-	void unbind();
+	void AddVertexBuffer(VertexBuffer& vb, const VertexBufferLayout& layout);
+	void AddIndexBuffer(IndexBuffer& ib);
+	void Bind();
+	void UnBind();
+	bool IsBound() { return m_isBound; };
+private:
+	unsigned int m_rendererID;
+	bool m_isBound;
 };
 

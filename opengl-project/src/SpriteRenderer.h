@@ -9,7 +9,7 @@ class SpriteRenderer
 public:
 	SpriteRenderer(const Shader &shader);
 	// default dstr calls dstr of Shader and VertexArray
-	void DrawSprite(Texture2D &texture, glm::vec2 position,
+	void DrawSprite(Texture &texture, glm::vec2 position,
 		glm::vec2 size = glm::vec2(10, 10), GLfloat rotate = 0.0f,
 		glm::vec4 color = glm::vec4(1.0f));
 private:

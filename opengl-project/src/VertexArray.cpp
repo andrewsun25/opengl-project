@@ -3,9 +3,10 @@
 #include "VertexBufferLayout.h"
 #include "util/Log.h"
 VertexArray::VertexArray()
-	:m_isBound(false)
+	:m_rendererID(0), m_isBound(true)
 {
 	GLCall(glGenVertexArrays(1, &m_rendererID));
+	Bind();
 }
 
 VertexArray::~VertexArray()
@@ -13,12 +14,12 @@ VertexArray::~VertexArray()
 	GLCall(glDeleteVertexArrays(1, &m_rendererID));
 }
 
-// Adds without binding anything
-void VertexArray::addVertexBuffer(VertexBuffer & vb, const VertexBufferLayout & layout)
+// Adds without Binding anything
+void VertexArray::AddVertexBuffer(VertexBuffer & vb, const VertexBufferLayout & layout)
 {
-	bind();
-	vb.bind();
-	const auto & attrs = layout.getAttrs();
+	Bind();
+	vb.Bind();
+	const auto & attrs = layout.Elements();
 	unsigned int offset = 0;
 	for (size_t i = 0; i < attrs.size(); ++i) {
 		const auto & attr = attrs[i];
@@ -32,24 +33,24 @@ void VertexArray::addVertexBuffer(VertexBuffer & vb, const VertexBufferLayout & 
 		// glVertexAttribPointer links the currently bound vao's ith attribute pointer with the currently bound vbo's data. 
 		// That's why the last param offset is a pointer.
 		GLCall(glEnableVertexAttribArray(i));
-		GLCall(glVertexAttribPointer(i, attr.count, attr.type, attr.normalized, layout.getStride(), (const void*)offset));
+		GLCall(glVertexAttribPointer(i, attr.count, attr.type, attr.normalized, layout.Stride(), (const void*)offset));
 		offset += attr.size;
 	}
 }
 
-void VertexArray::addIndexBuffer(IndexBuffer & ib)
+void VertexArray::AddIndexBuffer(IndexBuffer & ib)
 {
-	bind();
-	ib.bind();
+	Bind();
+	ib.Bind();
 }
 
-void VertexArray::bind()
+void VertexArray::Bind()
 {
 	GLCall(glBindVertexArray(m_rendererID));
 	m_isBound = true;
 }
 
-void VertexArray::unbind()
+void VertexArray::UnBind()
 {
 	GLCall(glBindVertexArray(0));
 	m_isBound = false;

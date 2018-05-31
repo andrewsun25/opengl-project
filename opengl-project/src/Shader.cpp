@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "GL/glew.h"
 #include "Shader.h"
 #include <fstream>
@@ -7,10 +8,11 @@
 #include "util/Log.h"
 
 Shader::Shader(const std::string & filepath)
-	:m_filepath(filepath), m_isBound(false)
+	:m_rendererID(0), m_isBound(true), m_uniformLocationCache()
 {
-	ShaderProgramSource source = parseShader(filepath);
-	m_rendererID = createShader(source.VertexSource, source.FragmentSource);
+	ShaderProgramSource source = ParseShader(filepath);
+	m_rendererID = CreateShader(source.VertexSource, source.FragmentSource);
+	Bind();
 }
 
 Shader::~Shader()
@@ -18,19 +20,19 @@ Shader::~Shader()
 	GLCall(glDeleteProgram(m_rendererID));
 }
 
-void Shader::bind()
+void Shader::Bind()
 {
 	m_isBound = true;
 	GLCall(glUseProgram(m_rendererID));
 }
 
-void Shader::unbind()
+void Shader::UnBind()
 {
 	m_isBound = false;
 	GLCall(glUseProgram(0));
 }
 
-int Shader::getUniformLocation(const std::string & name)
+int Shader::GetUniformLocation(const std::string & name)
 {
 	// if the uniform is already in the cache, return its location
 	if (m_uniformLocationCache.find(name) != m_uniformLocationCache.end()) {
@@ -46,31 +48,31 @@ int Shader::getUniformLocation(const std::string & name)
 	return uniformLocation;
 }
 
-void Shader::setUniform4f(const std::string & name, float v0, float v1, float v2, float v3)
+void Shader::SetUniform4f(const std::string & name, float v0, float v1, float v2, float v3)
 {
 	// glUniform4f DOES require glUseProgram to be called first
-	ASSERT(m_isBound);
-	GLCall(glUniform4f(getUniformLocation(name), v0, v1, v2, v3));
+	Bind();
+	GLCall(glUniform4f(GetUniformLocation(name), v0, v1, v2, v3));
 }
 
-void Shader::setUniform1f(const std::string & name, float v0)
+void Shader::SetUniform1f(const std::string & name, float v0)
 {
-	ASSERT(m_isBound);
-	GLCall(glUniform1f(getUniformLocation(name), v0));
+	Bind();
+	GLCall(glUniform1f(GetUniformLocation(name), v0));
 }
 
-void Shader::setUniform1i(const std::string & name, int v)
+void Shader::SetUniform1i(const std::string & name, int v)
 {
-	GLCall(glUniform1i(getUniformLocation(name), v));
+	GLCall(glUniform1i(GetUniformLocation(name), v));
 }
 
-void Shader::setUniformMat4f(const std::string & name, const glm::mat4 & matrix)
+void Shader::SetUniformMat4f(const std::string & name, const glm::mat4 & matrix)
 {
 	// modify a uniform that is 1 matrix, not normalized, beginning @ first element of param. 
-	GLCall(glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, &matrix[0][0]));
+	GLCall(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &matrix[0][0]));
 }
 // private file parsing code
-ShaderProgramSource Shader::parseShader(const std::string& filepath)
+Shader::ShaderProgramSource Shader::ParseShader(const std::string& filepath)
 {
 	std::ifstream stream(filepath);
 	// use enum class over enums
@@ -111,10 +113,10 @@ ShaderProgramSource Shader::parseShader(const std::string& filepath)
 	return { ss[0].str(), ss[1].str() };
 }
 
-unsigned int Shader::compileShader(unsigned int type, const std::string & srcCode)
+unsigned int Shader::CompileShader(unsigned int type, const std::string & srcCode)
 {
 	// id is the final shader to be returned
-	unsigned int id = glCreateShader(type);
+	GLCall(unsigned int id = glCreateShader(type));
 	const char* src = srcCode.c_str();
 	// Replaces source code in id's shader obj with src. nullptr for lengths array.
 	GLCall(glShaderSource(id, 1, &src, nullptr));
@@ -139,13 +141,13 @@ unsigned int Shader::compileShader(unsigned int type, const std::string & srcCod
 	return id;
 }
 
-unsigned int Shader::createShader(const std::string & vertexShader, const std::string & fragmentShader)
+unsigned int Shader::CreateShader(const std::string & vertexShader, const std::string & fragmentShader)
 {
 	// create a glProgram
 	GLCall(unsigned int program = glCreateProgram()); // GLuint is equivalent to unsigned int.
 											  // create a glShader using the provided src code.
-	unsigned int vs = compileShader(GL_VERTEX_SHADER, vertexShader);
-	unsigned int fs = compileShader(GL_FRAGMENT_SHADER, fragmentShader);
+	unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
+	unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
 	// Attach, Link, Validate, delete linked shaders.
 	GLCall(glAttachShader(program, vs));
 	GLCall(glAttachShader(program, fs));

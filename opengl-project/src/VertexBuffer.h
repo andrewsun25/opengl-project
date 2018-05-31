@@ -1,17 +1,16 @@
 #pragma once
+#include <GL/glew.h>
 
 class VertexBuffer
 {
-private:
-	// renderer is generic name that is cross API
-	unsigned int m_rendererID;
-	// move m_isBound back
-	friend class VertexArray;
 public:
-	bool m_isBound;
-	VertexBuffer(const void * data, unsigned int size);
+	VertexBuffer(const void * data, GLuint size);
 	virtual ~VertexBuffer();
-	void bind();
-	void unbind();
+	void Bind();
+	void UnBind();
+	bool IsBound() const { return m_isBound; };
+private:
+	GLuint m_rendererID;
+	bool m_isBound;
 };
 
