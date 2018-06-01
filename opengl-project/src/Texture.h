@@ -2,20 +2,24 @@
 #include <string>
 #include "GL/glew.h"
 #include "util/Log.h"
+#include "OGLGarbageCollected.h"
 
-class Texture
+class Texture : OGLGarbageCollected
 {
 public:
-	Texture() = default;
-	Texture(const std::string& filepath);
-	// No destructor because we want to be able to copy/assign 
-	// textures without destructor deleting the texture.
+	Texture() = default; // calls OGLGarbageCollected() and generates a new shared_ptr
+	Texture(const std::string& filepath); // calls OGLGarbageCollected() and generates a new shared_ptr
+	// Implicit Copy Cnstructor calls OGLGarbageCollected implicit copy constructor.
+	// Implicit Copy Assignment calls OGLGarbageCollected implicit copy assignment operator.
+	~Texture() {
+		DeleteResourceIfLone();
+	}
 	void Bind();
 	void UnBind();
-	bool IsBound() const { return m_isBound; };
+	// bool IsBound() inherited
 private:
-	GLuint m_rendererID = 0;
 	int m_width = 0, m_height = 0, m_bpp = 0; // bits per pixl
-	bool m_isBound = true;
+
+	void DeleteResourceIfLone();
 };
 

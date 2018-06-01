@@ -7,7 +7,7 @@ std::map<std::string, Shader> ResourceManager::Shaders;
 
 Shader ResourceManager::LoadShader(const std::string& file, const std::string& name)
 {
-	Shaders[name] = Shader(file);
+	Shaders[name] = Shader(file); // creates 1 ref
 	return Shaders[name];
 }
 

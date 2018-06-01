@@ -36,7 +36,6 @@ void SpriteRenderer::DrawSprite(Texture & texture, glm::vec2 position,
 
 void SpriteRenderer::initRenderData()
 {
-	// define (0,0) as the bottom left corner
 	Vertex vertices[] = {
 		// Pos      // Tex
 		glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f),

@@ -134,6 +134,13 @@ unsigned int Shader::CompileShader(unsigned int type, const std::string & srcCod
 	return id;
 }
 
+void Shader::DeleteResourceIfLone()
+{
+	if (m_refCounter.use_count() == 1) {
+		GLCall(glDeleteProgram(m_rendererID));
+	}
+}
+
 unsigned int Shader::CreateShader(const std::string & vertexShader, const std::string & fragmentShader)
 {
 	// create a glProgram

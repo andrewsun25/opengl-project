@@ -40,6 +40,6 @@ void App::Render()
 {
 	Texture ferretTexture(ResourceManager::GetTexture("ferret"));
 	Renderer->DrawSprite(ferretTexture,
-		glm::vec2(200, 200), glm::vec2(300, 400), 45.0f, 
+		glm::vec2(200, 200), glm::vec2(20, 80), -45.0f, 
 		glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
 }

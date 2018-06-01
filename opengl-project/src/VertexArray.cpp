@@ -52,4 +52,11 @@ void VertexArray::UnBind()
 	m_isBound = false;
 }
 
+void VertexArray::DeleteResourceIfLone()
+{
+	if (m_refCounter.use_count() == 1) {
+		GLCall(glDeleteVertexArrays(1, &m_rendererID));
+	}
+}
+
 

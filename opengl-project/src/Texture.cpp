@@ -40,3 +40,10 @@ void Texture::UnBind()
 	m_isBound = false;
 	GLCall(glBindTexture(GL_TEXTURE_2D, 0));
 }
+
+void Texture::DeleteResourceIfLone()
+{
+	if (m_refCounter.use_count() == 1) {
+		GLCall(glDeleteTextures(1, &m_rendererID));
+	}
+}
